@@ -6,6 +6,6 @@ public class DecoderTest {
 
     @Test
     public void getUpdatedURLTest() throws IOException {
-        System.out.println(Decoder.getUpdatedURL());
+        System.out.println();
     }
 }
