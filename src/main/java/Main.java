@@ -7,7 +7,7 @@ public class Main {
         System.out.println("Program starting!");
         System.out.println("Root building...");
 
-        LetterRootReverse root = Decoder.readFile();
+        LetterRootReverse root = Decoder.readFileCSV();
         Reader reader = new Reader(root);
         reader.startReading();
 /*
