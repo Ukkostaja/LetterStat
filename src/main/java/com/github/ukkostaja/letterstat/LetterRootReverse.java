@@ -2,7 +2,7 @@ package com.github.ukkostaja.letterstat;
 
 import java.util.HashMap;
 
-public class LetterRootReverse implements Letters{
+public class LetterRootReverse implements Letters, Root{
 
     HashMap<Character, LetterNodeReverse> map = new HashMap<>(29,1f);
 
@@ -36,5 +36,15 @@ public class LetterRootReverse implements Letters{
             total += letter.getCountTotal();
         }
         return total;
+    }
+
+    @Override
+    public void addWord(Word toAdd) {
+        add(toAdd);
+    }
+
+    @Override
+    public Letters getLetters() {
+        return this;
     }
 }

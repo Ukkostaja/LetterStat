@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.LogManager;
 
 public class Main {
@@ -14,7 +16,7 @@ public class Main {
 
     public static void main(String[] args) {
         installLog();
-        
+
         try {
             run(args);
         } catch (Exception e) {
@@ -27,11 +29,21 @@ public class Main {
         logger.info("Program starting!");
         logger.info("Root building...");
 
-        LetterRootReverse root = Decoder.readFileCSV();
-        Reader reader = new Reader(root);
-        //reader.startReading();
+        List<Root> roots = new ArrayList<>();
+        roots.add(new LetterRootReverse());
+
+        String url = Decoder.getFileUrl();
+        if (url.length() > 0) {
+            Decoder.downloadAndImportFile(url,roots);
+        }
 
         logger.info("Root built!");
+
+        logger.info("Interactive mode engaged.");
+        //LetterRootReverse root = Decoder.readFileCSV();
+        Reader reader = new Reader(roots.get(0).getLetters());
+        reader.startReading();
+
         logger.info("Program Finished!");
     }
 

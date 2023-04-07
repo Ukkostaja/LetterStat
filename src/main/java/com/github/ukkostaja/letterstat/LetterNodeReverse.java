@@ -24,17 +24,15 @@ public class LetterNodeReverse implements Letters {
         logger = LoggerFactory.getLogger(this.getClass());
         loggerString = new StringBuilder();
         debugBuffer = new StringBuffer(fullWord.getWord());
-        //loggerString.append(position +"+:");
         if(fullWord == null) {
             leafNode = true;
             logger.trace(loggerString.toString()+":FAILED");
-            return;
+            throw new LetterNodeException();
         }
         this.position = position;
         letter = Character.valueOf(fullWord.getWord().charAt(position));
         prePath = fullWord.getWord().substring(0,position);
         initHashMap(fullWord);
-        //logger.trace(":SUCCESS");
     }
 
     private void initHashMap(Word fullWord) {
@@ -119,6 +117,9 @@ public class LetterNodeReverse implements Letters {
             return 0;
         }
         return letterNodeReverse.find(word);
+    }
 
+    private void logLineEnd(String lastAdd){
+        logger.trace(debugBuffer.toString()+":"+lastAdd);
     }
 }

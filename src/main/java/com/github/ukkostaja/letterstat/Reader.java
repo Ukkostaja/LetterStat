@@ -1,21 +1,26 @@
 package com.github.ukkostaja.letterstat;
 
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 public class Reader {
 
-    LetterRootReverse root;
+    Letters root;
 
     String s;
 
-    public Reader(LetterRootReverse root) {
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
+
+    public Reader(Letters root) {
         this.root = root;
+
     }
 
     void startReading() {
         Scanner in = new Scanner(System.in);
 
         while((s= in.nextLine()) != ""){
+            logger.finest(s);
             print(root.find(s));
         }
     }
@@ -23,7 +28,9 @@ public class Reader {
 
     void print(long result){
         float percent = 100f * result / root.getCountTotal();
-        System.out.println("Searching for: "+ s + " Found: "+result + " For a percent of " + percent);
+        String line = "Searching for: "+ s + " Found: "+result + " For a percent of " + percent;
+        logger.finer(line);
+        System.out.println(line);
     }
 
 }
