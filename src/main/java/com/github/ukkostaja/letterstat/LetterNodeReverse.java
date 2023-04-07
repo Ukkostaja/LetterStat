@@ -1,3 +1,8 @@
+package com.github.ukkostaja.letterstat;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashMap;
 
 public class LetterNodeReverse implements Letters {
@@ -9,27 +14,32 @@ public class LetterNodeReverse implements Letters {
     String prePath;
     int position;
 
+    Logger logger;
+    StringBuilder loggerString;
+
     long countHere=0;
     long countUnder=0;
 
     LetterNodeReverse(Word fullWord, int position ) {
+        logger = LoggerFactory.getLogger(this.getClass());
+        loggerString = new StringBuilder();
         debugBuffer = new StringBuffer(fullWord.getWord());
-        //System.out.print(position +"+:");
+        //loggerString.append(position +"+:");
         if(fullWord == null) {
             leafNode = true;
-            System.out.println(":FAILED");
+            logger.trace(loggerString.toString()+":FAILED");
             return;
         }
         this.position = position;
         letter = Character.valueOf(fullWord.getWord().charAt(position));
         prePath = fullWord.getWord().substring(0,position);
         initHashMap(fullWord);
-        //System.out.println(":SUCCESS");
+        //logger.trace(":SUCCESS");
     }
 
     private void initHashMap(Word fullWord) {
         if(fullWord.getWord().length() <= position) {
-            System.out.println(":Leafed1");
+            logger.trace(loggerString.toString()+":Leafed1");
             leafNode = true;
             countHere = fullWord.getCount();
             return;
@@ -47,9 +57,9 @@ public class LetterNodeReverse implements Letters {
         debugBuffer = new StringBuffer(fullWord.getWord());
         debugBuffer.reverse();
         int newPosition = position+1;
-        System.out.print(position+":");
+        loggerString.append(position+":");
         if(position >= fullWord.getWord().length()-1) {
-            System.out.println(debugBuffer.toString()+":"+fullWord.getCount()+":Leafed2");
+            logger.trace(debugBuffer.toString()+":"+fullWord.getCount()+":Leafed2");
             countHere+=fullWord.getCount();
             return;
         }
@@ -98,10 +108,10 @@ public class LetterNodeReverse implements Letters {
     @Override
     public long find(String word) {
         if(word.length() == getUptoPath().length()) {
-            System.out.println("Search ended at: " + getUptoPath() + " with found of: "+getCountTotal());
+            logger.trace("Search ended at: " + getUptoPath() + " with found of: "+getCountTotal());
             return getCountTotal();
         }
-        //System.out.println(debugBuffer);
+        //logger.trace(debugBuffer);
         int pos = prePath.length();
         Character ch= Character.valueOf(word.charAt(pos+1));
         LetterNodeReverse letterNodeReverse = map.get(ch);

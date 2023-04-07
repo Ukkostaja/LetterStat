@@ -1,3 +1,5 @@
+package com.github.ukkostaja.letterstat;
+
 import java.util.HashMap;
 
 public class LetterRootReverse implements Letters{

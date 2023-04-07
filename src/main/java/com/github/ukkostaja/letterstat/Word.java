@@ -1,3 +1,5 @@
+package com.github.ukkostaja.letterstat;
+
 public class Word {
 
     private String word;

@@ -1,10 +1,14 @@
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+package com.github.ukkostaja.letterstat;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
@@ -13,13 +17,12 @@ import java.util.Scanner;
 public class Decoder {
 
     public static final String URL_TO_GET = "https://www.avoindata.fi/data/fi/dataset/none";
-    private static Logger logger = LogManager.getLogger(Decoder.class);
+    private static Logger logger = LoggerFactory.getLogger(Decoder.class);
     static private long totalNames;
 
     public static long getTotalNames() {
         return totalNames;
     }
-
 
     static HttpURLConnection getConnection(String urlToConnect) throws IOException {
         URL url = new URL(urlToConnect);
@@ -78,8 +81,8 @@ public class Decoder {
     static LetterRootReverse readFileCSV() {
         LetterRootReverse backwardRoot = new LetterRootReverse();
         try(
-                FileReader fr = new FileReader("resources/sukunimitilasto.csv");
-                BufferedReader br = new BufferedReader(fr);
+                InputStream fr = Decoder.class.getResourceAsStream("/sukunimitilasto.csv");
+                BufferedReader br = new BufferedReader(new InputStreamReader(fr));
         ) {
             String line;
             while((line = br.readLine()) != null) {
@@ -89,16 +92,16 @@ public class Decoder {
                     totalNames+=value;
                     backwardRoot.add(new Word(new StringBuilder(parts[0]).reverse().toString(),value));
                 } catch (NumberFormatException e) {
-                    System.out.println("Invalid line: "+line);
+                    logger.info("Invalid line: "+line);
                 }
             }
 
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            logger.error("FileNotFoundException",e);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            logger.error("IOException",e);
         }
-        System.out.println("Total names found: " + totalNames);
+        logger.info("Total names found: " + totalNames);
         return backwardRoot;
     }
 }

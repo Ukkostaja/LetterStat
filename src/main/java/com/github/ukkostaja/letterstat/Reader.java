@@ -1,3 +1,5 @@
+package com.github.ukkostaja.letterstat;
+
 import java.util.Scanner;
 
 public class Reader {
